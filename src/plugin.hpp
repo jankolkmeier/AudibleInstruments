@@ -28,6 +28,14 @@ extern Model* modelShelves;
 extern Model* modelStreams;
 
 
+template <typename BASE>
+struct CKD6Light : BASE {
+	CKD6Light() {
+		this->box.size = Vec(22, 22);
+	}
+};
+
+
 template <typename Base>
 struct Rogan6PSLight : Base {
 	Rogan6PSLight() {

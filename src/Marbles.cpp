@@ -536,14 +536,6 @@ struct Marbles : Module {
 };
 
 
-template <typename BASE>
-struct CKD6Light : BASE {
-	CKD6Light() {
-		this->box.size = Vec(22, 22);
-	}
-};
-
-
 struct MarblesWidget : ModuleWidget {
 	MarblesWidget(Marbles* module) {
 		setModule(module);
