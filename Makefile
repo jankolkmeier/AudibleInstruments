@@ -101,6 +101,14 @@ SOURCES += eurorack/streams/svf.cc
 SOURCES += eurorack/streams/vactrol.cc
 SOURCES += eurorack/streams/compressor.cc
 
+SOURCES += eurorack/beads/dsp/processor.cc
+SOURCES += eurorack/beads/dsp/synth.cc
+SOURCES += eurorack/beads/dsp/mu_law.cc
+SOURCES += eurorack/beads/dsp/delay_clock.cc
+SOURCES += eurorack/beads/dsp/delay_controller.cc
+SOURCES += eurorack/beads/dsp/trigger_generator.cc
+SOURCES += eurorack/beads/resources.cc
+
 
 DISTRIBUTABLES += $(wildcard LICENSE*) res
 

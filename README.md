@@ -60,6 +60,12 @@ Based on [Ripples](https://mutable-instruments.net/modules/ripples), [Manual](ht
 Based on [Shelves](https://mutable-instruments.net/modules/shelves), [Manual](https://mutable-instruments.net/modules/shelves/manual/)
 - Virtual analog model provided by [Alright Devices](https://www.alrightdevices.com/) after successful crowdfunding.
 
+### Texture Synthesizer 2
+Based on [Beads](https://mutable-instruments.net/modules/beads), [Manual](https://mutable-instruments.net/modules/beads/manual/)
+- right-click context menu replaces the button combinations (input gain, CV assign amounts, seed latch, grain gate output)
+- switches to the wavetable synth as soon as both audio inputs are unpatched
+- a frozen buffer is saved with the patch
+
 
 ## Not yet ported
 

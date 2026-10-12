@@ -1,4 +1,5 @@
 ### 2.0.0 (in development)
+- Add Texture Synthesizer 2 (Beads).
 - Update Mutable Instruments firmware sources to the latest upstream.
 	- Segment Generator: final firmware. A group of step segments after a ramp or hold segment is now a sequencer.
 	- Tidal Modulator 2: final firmware. Fixes the end-of-ramp output.
