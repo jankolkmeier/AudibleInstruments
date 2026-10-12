@@ -8,6 +8,11 @@
 #pragma GCC diagnostic pop
 
 
+// Firmware 1.2 places 8 new engines before the original 16. Only the original ones are exposed
+static const int PLAITS_NUM_ENGINES = 16;
+static const int PLAITS_ENGINE_OFFSET = plaits::kMaxEngines - PLAITS_NUM_ENGINES;
+
+
 struct Plaits : Module {
 	enum ParamIds {
 		MODEL1_PARAM,
@@ -85,6 +90,7 @@ struct Plaits : Module {
 		for (int i = 0; i < 16; i++) {
 			stmlib::BufferAllocator allocator(shared_buffer[i], sizeof(shared_buffer[i]));
 			voice[i].Init(&allocator);
+			voice[i].set_first_engine(PLAITS_ENGINE_OFFSET);
 		}
 
 		onReset();
@@ -164,7 +170,10 @@ struct Plaits : Module {
 			bool activeEngines[16] = {};
 			bool pulse = false;
 			for (int c = 0; c < channels; c++) {
-				int activeEngine = voice[c].active_engine();
+				int activeEngine = voice[c].active_engine() - PLAITS_ENGINE_OFFSET;
+				// No engine is active before the first block
+				if (activeEngine < 0 || activeEngine >= PLAITS_NUM_ENGINES)
+					continue;
 				activeEngines[activeEngine] = true;
 				// Pulse the light if at least one voice is using a different engine.
 				if (activeEngine != patch.engine)
@@ -195,13 +204,16 @@ struct Plaits : Module {
 			patch.frequency_modulation_amount = params[FREQ_CV_PARAM].getValue();
 			patch.timbre_modulation_amount = params[TIMBRE_CV_PARAM].getValue();
 			patch.morph_modulation_amount = params[MORPH_CV_PARAM].getValue();
+			plaits::Patch voicePatch = patch;
+			voicePatch.engine = patch.engine + PLAITS_ENGINE_OFFSET;
 
 			// Render output buffer for each voice
 			dsp::Frame<16 * 2> outputFrames[blockSize];
 			for (int c = 0; c < channels; c++) {
 				// Construct modulations
 				plaits::Modulations modulations;
-				modulations.engine = inputs[ENGINE_INPUT].getPolyVoltage(c) / 5.f;
+				// 5V sweeps across the original engines
+				modulations.engine = inputs[ENGINE_INPUT].getPolyVoltage(c) / 5.f * (PLAITS_NUM_ENGINES - 1) / (plaits::kMaxEngines - 1);
 				modulations.note = inputs[NOTE_INPUT].getVoltage(c) * 12.f;
 				modulations.frequency = inputs[FREQ_INPUT].getPolyVoltage(c) * 6.f;
 				modulations.harmonics = inputs[HARMONICS_INPUT].getPolyVoltage(c) / 5.f;
@@ -219,7 +231,7 @@ struct Plaits : Module {
 
 				// Render frames
 				plaits::Voice::Frame output[blockSize];
-				voice[c].Render(patch, modulations, output, blockSize);
+				voice[c].Render(voicePatch, modulations, output, blockSize);
 
 				// Convert output to frames
 				for (int i = 0; i < blockSize; i++) {

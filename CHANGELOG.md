@@ -1,4 +1,9 @@
 ### 2.0.0 (in development)
+- Update Mutable Instruments firmware sources to the latest upstream.
+	- Segment Generator: final firmware. A group of step segments after a ramp or hold segment is now a sequencer.
+	- Tidal Modulator 2: final firmware. Fixes the end-of-ramp output.
+	- Macro Oscillator 2: firmware 1.2 voicing changes to the original 16 models. The 8 new models are not exposed yet.
+	- Random Sampler: upstream déjà vu fixes.
 - Add port labels.
 - Rearrange context menus for clarity and consistency.
 
